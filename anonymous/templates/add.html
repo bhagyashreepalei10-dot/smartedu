@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculator</title>
+</head>
+<body>
+
+<h1>Add & Subtract Calculator</h1>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <input type="text" name="f" placeholder="First Number">
+    <br><br>
+
+    <input type="text" name="s" placeholder="Second Number">
+    <br><br>
+
+    <button type="submit" name="operation" value="add">
+        Add
+    </button>
+
+    <button type="submit" name="operation" value="subtract">
+        Subtract
+    </button>
+
+</form>
+
+<h2>Result : {{ output }}</h2>
+
+</body>
+</html>
