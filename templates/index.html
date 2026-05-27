@@ -1,0 +1,182 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Bhagyashree Website</title>
+
+    <style>
+
+        body{
+            background:black;
+            margin:0;
+            padding:0;
+            font-family:Arial;
+            color:white;
+        }
+
+        .main{
+            width:90%;
+            margin:auto;
+            margin-top:20px;
+            border:3px solid cyan;
+            border-radius:20px;
+            padding:20px;
+            box-shadow:0px 0px 25px cyan;
+        }
+
+        h1{
+            text-align:center;
+            font-size:55px;
+            color:white;
+            text-shadow:0px 0px 20px cyan;
+        }
+
+        #slide{
+            width:100%;
+            height:500px;
+            border-radius:20px;
+            border:4px solid cyan;
+            box-shadow:0px 0px 25px cyan;
+            object-fit:contain;
+            background:black;
+        }
+
+        .buttons{
+            margin-top:35px;
+            text-align:center;
+        }
+
+        .btn{
+            text-decoration:none;
+            color:white;
+            border:2px solid cyan;
+            padding:15px 30px;
+            margin:10px;
+            display:inline-block;
+            border-radius:15px;
+            font-size:20px;
+            font-weight:bold;
+            transition:0.5s;
+            box-shadow:0px 0px 15px cyan;
+        }
+
+        .btn:hover{
+            background:cyan;
+            color:black;
+            transform:scale(1.1);
+            box-shadow:0px 0px 25px magenta;
+        }
+
+        footer{
+            text-align:center;
+            margin-top:40px;
+            font-size:25px;
+            color:magenta;
+            text-shadow:0px 0px 10px magenta;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="main">
+
+    <h1>
+        WELCOME TO <br>
+        BHAGYASHREE WEBSITE
+    </h1>
+
+    <!-- IMAGE SLIDER -->
+
+    <img id="slide" src="{% static 'images/image.jpeg' %}">
+
+    <!-- BUTTONS -->
+
+    <div class="buttons">
+
+        <a href="/index/" class="btn">
+            HOME
+        </a>
+
+        <a href="/register/" class="btn">
+            REGISTER
+        </a>
+
+        <a href="/login/" class="btn">
+            LOGIN
+        </a>
+
+        <a href="/contact/" class="btn">
+            CONTACT
+        </a>
+
+        <a href="/gallery/" class="btn">
+            GALLERY
+        </a>
+
+        <a href="/faq/" class="btn">
+            FAQ
+        </a>
+
+        <a href="/calculator/" class="btn">
+    CALCULATOR
+</a>
+
+        <a href="/cgpa/" class="btn">
+            CGPA
+        </a>
+
+        <a href="/about/" class="btn">
+            ABOUT
+        </a>
+
+        <a href="/logbook/" class="btn">
+            LOGBOOK
+        </a>
+
+    </div>
+
+    <footer>
+
+        @Bhagyashree Website 2026
+
+    </footer>
+
+</div>
+
+<script>
+
+    let images = [
+
+        "{% static 'images/bhagya4.jpeg' %}",
+
+        "{% static 'images/bhagya2.jpeg' %}",
+
+        "{% static 'images/bhagya3.jpeg' %}"
+
+    ];
+
+    let i = 0;
+
+    setInterval(function(){
+
+        i++;
+
+        if(i >= images.length){
+
+            i = 0;
+
+        }
+
+        document.getElementById("slide").src = images[i];
+
+    },2000);
+
+</script>
+
+</body>
+</html>
