@@ -1,0 +1,495 @@
+{%load static%}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* RESET & BODY SETUP */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #050505;
+            background-image: 
+                radial-gradient(circle at 50% 50%, #1a1a2e 0%, #000000 100%);
+            font-family: 'Rajdhani', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        /* --- THE NEON CARD CONTAINER --- */
+        .cyber-card {
+            position: relative;
+            width: 100%;
+            max-width: 750px;
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.1),
+                inset 0 0 20px rgba(0, 0, 0, 0.5);
+            animation: cardPulse 4s infinite ease-in-out;
+        }
+
+        /* --- GLOWING BORDER ACCENT --- */
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, #00f260, #0575e6, #e100ff, #00f260);
+            background-size: 300% 100%;
+            animation: borderGlow 3s linear infinite;
+            box-shadow: 0 0 10px #0575e6;
+            z-index: 100;
+        }
+
+        /* --- HEADER SECTION --- */
+        .card-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 10;
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-link {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: rgba(255,255,255,0.6);
+            padding: 5px 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-link:hover {
+            color: #fff;
+            border-color: #00f260;
+            box-shadow: 0 0 10px rgba(0, 242, 96, 0.3);
+        }
+
+        .header-link.login-btn {
+            border-color: #0575e6;
+            color: #0575e6;
+        }
+
+        .header-link.login-btn:hover {
+            background: #0575e6;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(5, 117, 230, 0.5);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00f260;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00f260;
+            animation: blink 2s infinite;
+        }
+
+        /* --- BODY SECTION (IMAGE SLIDER) --- */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6) contrast(1.1);
+        }
+
+        /* Slider Overlay Text */
+        .slide-content {
+            position: absolute;
+            bottom: 25px;
+            left: 25px;
+            z-index: 5;
+        }
+
+        .slide-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 242, 96, 0.8);
+            margin-bottom: 5px;
+        }
+
+        .slide-desc {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Navigation Arrows */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00f260;
+            color: #00f260;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .nav-arrow:hover {
+            background: #00f260;
+            color: #000;
+            box-shadow: 0 0 15px #00f260;
+        }
+
+        .prev { left: 15px; }
+        .next { right: 15px; }
+
+        /* Navigation Dots */
+        .slider-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: transparent;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #e100ff;
+            border-color: #e100ff;
+            box-shadow: 0 0 10px #e100ff;
+            transform: scale(1.2);
+        }
+
+        /* --- BUTTON SECTION BELOW SLIDER --- */
+        .button-section {
+            padding: 25px 20px;
+            background: rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-btn {
+            position: relative;
+            min-width: 140px;
+            padding: 12px 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #fff;
+            background: transparent;
+            border: 2px solid;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        /* Button Variants */
+        .btn-home {
+            border-color: #00f260;
+            color: #00f260;
+            box-shadow: 0 0 8px rgba(0, 242, 96, 0.2);
+        }
+        .btn-home:hover {
+            background: #00f260;
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 242, 96, 0.6);
+        }
+
+        .btn-register {
+            border-color: #e100ff;
+            color: #e100ff;
+            box-shadow: 0 0 8px rgba(225, 0, 255, 0.2);
+        }
+        .btn-register:hover {
+            background: #e100ff;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(225, 0, 255, 0.6);
+        }
+
+        .btn-login {
+            border-color: #0575e6;
+            color: #0575e6;
+            box-shadow: 0 0 8px rgba(5, 117, 230, 0.2);
+        }
+        .btn-login:hover {
+            background: #0575e6;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(5, 117, 230, 0.6);
+        }
+
+        .btn-contact {
+            border-color: #ff9900;
+            color: #ff9900;
+            box-shadow: 0 0 8px rgba(255, 153, 0, 0.2);
+        }
+        .btn-contact:hover {
+            background: #ff9900;
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 153, 0, 0.6);
+        }
+
+        /* --- FOOTER SECTION --- */
+        .card-footer {
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-family: 'Orbitron', sans-serif;
+            color: #aaa;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-info {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .neon-text-main {
+            color: #00f260;
+            text-shadow: 0 0 5px #00f260;
+        }
+        
+        .neon-text-sub {
+            color: #e100ff;
+            text-shadow: 0 0 5px #e100ff;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        /* ANIMATIONS */
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 300% 50%; }
+        }
+
+        @keyframes cardPulse {
+            0% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); }
+            50% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.25); }
+            100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* RESPONSIVE TWEAK */
+        @media (max-width: 600px) {
+            .slider-container { height: 220px; }
+            .header-nav { display: none; } /* Hide header links on mobile */
+            .button-section { flex-direction: column; align-items: center; }
+            .nav-btn { width: 100%; max-width: 250px; }
+            .card-header, .card-footer {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            .slide-title { font-size: 1.1rem; }
+            .logo { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MAIN CARD -->
+    <div class="cyber-card">
+        
+        <!-- HEADER SECTION -->
+        <div class="card-header">
+            <div class="logo">WELCOME TO MY WEBSITE</div>
+            
+            <!-- Compact Header Navigation -->
+            <div class="header-nav">
+                <a href="{% url 'index' %}" class="header-link">Home</a>
+                <a href="{% url 'register' %}" class="header-link">Register</a>
+                <a href="{% url 'login' %}" class="header-link login-btn">Login</a>
+            </div>
+            
+            <div class="status-dot" title="System Active"></div>
+        </div>
+
+        <!-- IMAGE SLIDER -->
+        <div class="slider-container">
+            
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <img src="{% static 'images/SinuImage.jpeg' %}" alt="Slide 1">
+                <div class="slide-content">
+                    <div class="slide-title">WELCOME TO MY WEBSITE</div>
+                    
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="slide">
+                <img src="{% static 'images/image.jpg.jpeg' %}" alt="Slide 2">
+                <div class="slide-content">
+                    <div class="slide-title">INTERNSHIP 2026</div>
+                    
+                </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="slide">
+                <img src="{% static 'images/IMG_20260504_130626.jpg.jpeg' %}" alt="Slide 1">
+                
+            </div>
+
+            <!-- Navigation Arrows -->
+            <div class="nav-arrow prev" onclick="changeSlide(-1)">&#10094;</div>
+            <div class="nav-arrow next" onclick="changeSlide(1)">&#10095;</div>
+
+            <!-- Navigation Dots -->
+            <div class="slider-dots">
+                <div class="dot active" onclick="goToSlide(0)"></div>
+                <div class="dot" onclick="goToSlide(1)"></div>
+                <div class="dot" onclick="goToSlide(2)"></div>
+            </div>
+
+        </div>
+
+        <!-- MAIN BUTTON SECTION -->
+        <div class="button-section">
+            <a href="{% url 'index' %}" class="nav-btn btn-home">Home Page</a>
+            <a href="{% url 'register' %}" class="nav-btn btn-register">Register</a>
+            <a href="{% url 'login' %}" class="nav-btn btn-login">Login</a>
+            <a href="{% url 'contact' %}" class="nav-btn btn-contact">Contact Us</a>
+        </div>
+
+        <!-- FOOTER SECTION -->
+        <div class="card-footer">
+            <span class="neon-text-main">@Internship at seeree 2026</span>
+            <div class="footer-info">
+                <span class="neon-text-sub">Priyaranjan</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT FOR SLIDER -->
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const totalSlides = slides.length;
+
+        // Auto Slide (4 seconds interval)
+        let autoSlideInterval = setInterval(() => {
+            changeSlide(1);
+        }, 4000);
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+
+            if (index >= totalSlides) currentSlide = 0;
+            else if (index < 0) currentSlide = totalSlides - 1;
+            else currentSlide = index;
+
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+            resetAutoSlide();
+        }
+
+        function goToSlide(index) {
+            showSlide(index);
+            resetAutoSlide();
+        }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(() => {
+                changeSlide(1);
+            }, 4000);
+        }
+    </script>
+
+</body>
+</html>
